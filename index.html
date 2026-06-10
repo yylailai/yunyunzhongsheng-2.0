@@ -442,6 +442,115 @@
     transition: background 0.2s;
   }
   .btn-export:hover { background: #1e5f38; }
+.btn-submit-teacher {
+    background: #d4a017;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(212,160,23,0.3);
+  }
+  .btn-submit-teacher:hover { background: #b8860b; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,134,11,0.4); }
+  .btn-submit-teacher:active { transform: translateY(0); }
+  .btn-submit-teacher:disabled { background: #999; cursor: not-allowed; box-shadow: none; }
+
+
+  /* ===== 提交给教师 ===== */
+  function submitToTeacher() {
+    if (!currentRole) { showToast('⚠️ 请先选择一个角色并填写分析内容'); return; }
+
+    // 检查是否有内容
+    const role = ROLES[currentRole];
+    let hasContent = false;
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      if (ta && ta.value.trim()) hasContent = true;
+    });
+    // 检查关键词
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp && inp.value.trim()) hasContent = true;
+    }
+    const soul = document.getElementById('soulInput');
+    if (soul && soul.value.trim()) hasContent = true;
+
+    if (!hasContent) { showToast('⚠️ 请先填写一些分析内容再提交'); return; }
+
+    // 先保存
+    saveRoleData(currentRole);
+
+    // 构建提交数据
+    const nameEl = document.getElementById('studentName');
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) { showToast('⚠️ 请先填写姓名'); return; }
+
+    const data = {
+      studentName: name,
+      role: role.name,
+      bookName: role.bookName,
+      timestamp: new Date().toISOString(),
+      analysis: {},
+      keywords: [],
+      soul: soul ? soul.value.trim() : '',
+      thinkQuestions: []
+    };
+
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      data.analysis[q[0]] = ta ? ta.value.trim() : '';
+    });
+
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp && inp.value.trim()) data.keywords.push(inp.value.trim());
+    }
+
+    document.querySelectorAll('.think-item').forEach((item, i) => {
+      const q = item.querySelector('.q');
+      const a = item.querySelector('textarea');
+      if (q && a && a.value.trim()) {
+        data.thinkQuestions.push({ q: q.textContent.trim(), a: a.value.trim() });
+      }
+    });
+
+    // 使用 Formspree 提交
+    // ⚠️ 将 YOUR_FORM_ID 替换为你创建的 Formspree form ID
+    const FORMSPREE_ID = 'SUBMIT_FORM_ID_HERE';
+
+    const btn = document.querySelector('.btn-submit-teacher');
+    btn.disabled = true;
+    btn.textContent = '⏳ 提交中...';
+
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(r => {
+      if (r.ok) {
+        showToast('✅ 提交成功！赖老师已收到你的分析。');
+        btn.textContent = '✅ 已提交';
+        btn.style.background = '#2c7a4a';
+      } else {
+        throw new Error('提交失败');
+      }
+    })
+    .catch(err => {
+      // Formspree 未配置时，复制内容到剪贴板备用
+      const txt = buildExportText();
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('📋 在线提交暂未开启，内容已复制到剪贴板，请粘贴发送给老师');
+      }).catch(() => {
+        showToast('⚠️ 提交失败，请使用「导出/复制」按钮获取内容');
+      });
+      btn.disabled = false;
+      btn.textContent = '📤 提交给教师';
+    });
+  }
 
   /* ===== Toast ===== */
   .toast {
@@ -523,7 +632,7 @@
     </div>
     <p><strong>🎯 任务目标：</strong>深入分析文本角色，提炼关键特征，为搭建角色对话智能体做准备。</p>
     <p><strong>📦 最终产出：</strong>每个角色的 <span class="highlight">「关键词清单」</span> + <span class="highlight">「角色说明书」</span></p>
-    <p style="margin-top:12px; font-size:0.85em; color:#888;">💡 在文本框里直接填写，完成后点击底部「📋 导出提交」按钮，把内容提交给老师。</p>
+    <p style="margin-top:12px; font-size:0.85em; color:#888;">💡 在文本框里直接填写，完成后点击底部「📤 提交给教师」按钮，把内容提交给赖老师。</p>
   </div>
 
   <!-- ===== 角色选择器 ===== -->
@@ -627,7 +736,8 @@
 
 <!-- ===== 底部操作栏 ===== -->
 <div class="action-bar">
-  <button class="btn-export" onclick="exportData()">📋 导出提交</button>
+  <button class="btn-submit-teacher" onclick="submitToTeacher()">📤 提交给教师</button>
+  <button class="btn-export" onclick="exportData()">📋 导出/复制</button>
   <button class="btn-save" onclick="saveData()">💾 保存到本地</button>
   <button class="btn-reset" onclick="resetAll()">↺ 重置</button>
   <button class="btn-print" onclick="window.print()">🖨️ 打印PDF</button>
@@ -1016,6 +1126,100 @@
     const body = encodeURIComponent(txt);
     window.open(`mailto:laoshe-ai@coze.email?subject=${subject}&body=${body}`);
     showToast('📧 邮件客户端已打开，点击发送即可提交！');
+  }
+
+
+  /* ===== 提交给教师 ===== */
+  function submitToTeacher() {
+    if (!currentRole) { showToast('⚠️ 请先选择一个角色并填写分析内容'); return; }
+
+    // 检查是否有内容
+    const role = ROLES[currentRole];
+    let hasContent = false;
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      if (ta && ta.value.trim()) hasContent = true;
+    });
+    // 检查关键词
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp && inp.value.trim()) hasContent = true;
+    }
+    const soul = document.getElementById('soulInput');
+    if (soul && soul.value.trim()) hasContent = true;
+
+    if (!hasContent) { showToast('⚠️ 请先填写一些分析内容再提交'); return; }
+
+    // 先保存
+    saveRoleData(currentRole);
+
+    // 构建提交数据
+    const nameEl = document.getElementById('studentName');
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) { showToast('⚠️ 请先填写姓名'); return; }
+
+    const data = {
+      studentName: name,
+      role: role.name,
+      bookName: role.bookName,
+      timestamp: new Date().toISOString(),
+      analysis: {},
+      keywords: [],
+      soul: soul ? soul.value.trim() : '',
+      thinkQuestions: []
+    };
+
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      data.analysis[q[0]] = ta ? ta.value.trim() : '';
+    });
+
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp && inp.value.trim()) data.keywords.push(inp.value.trim());
+    }
+
+    document.querySelectorAll('.think-item').forEach((item, i) => {
+      const q = item.querySelector('.q');
+      const a = item.querySelector('textarea');
+      if (q && a && a.value.trim()) {
+        data.thinkQuestions.push({ q: q.textContent.trim(), a: a.value.trim() });
+      }
+    });
+
+    // 使用 Formspree 提交
+    // ⚠️ 将 YOUR_FORM_ID 替换为你创建的 Formspree form ID
+    const FORMSPREE_ID = 'SUBMIT_FORM_ID_HERE';
+
+    const btn = document.querySelector('.btn-submit-teacher');
+    btn.disabled = true;
+    btn.textContent = '⏳ 提交中...';
+
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(r => {
+      if (r.ok) {
+        showToast('✅ 提交成功！赖老师已收到你的分析。');
+        btn.textContent = '✅ 已提交';
+        btn.style.background = '#2c7a4a';
+      } else {
+        throw new Error('提交失败');
+      }
+    })
+    .catch(err => {
+      // Formspree 未配置时，复制内容到剪贴板备用
+      const txt = buildExportText();
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('📋 在线提交暂未开启，内容已复制到剪贴板，请粘贴发送给老师');
+      }).catch(() => {
+        showToast('⚠️ 提交失败，请使用「导出/复制」按钮获取内容');
+      });
+      btn.disabled = false;
+      btn.textContent = '📤 提交给教师';
+    });
   }
 
   /* ===== Toast ===== */

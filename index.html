@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芸芸众生2.0 — 老舍中短篇小说角色分析</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+    background: #f5f0eb;
+    color: #2c2418;
+    line-height: 1.8;
+    padding: 0;
+  }
+
+  /* ===== 头部横幅 ===== */
+  .header {
+    background: linear-gradient(135deg, #1a1510 0%, #2c2418 50%, #1a1510 100%);
+    color: #e8dcc8;
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: "月";
+    position: absolute;
+    top: -30px;
+    left: 20px;
+    font-size: 180px;
+    font-weight: 900;
+    color: rgba(232, 220, 200, 0.04);
+    font-family: 'Noto Serif SC', serif;
+  }
+  .header::after {
+    content: "枪";
+    position: absolute;
+    bottom: -50px;
+    right: 30px;
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(232, 220, 200, 0.04);
+    font-family: 'Noto Serif SC', serif;
+  }
+  .header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.4em;
+    font-weight: 900;
+    letter-spacing: 6px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .sub {
+    font-size: 1em;
+    color: #b8a88a;
+    margin-top: 14px;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .meta {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #8a7c68;
+    position: relative;
+    z-index: 1;
+  }
+  .header .meta span {
+    display: inline-block;
+    margin: 0 12px;
+  }
+
+  /* ===== 主体容器 ===== */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 24px 80px;
+  }
+
+  /* ===== 任务说明卡 ===== */
+  .mission-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-left: 4px solid #8a7c68;
+  }
+  .mission-card p { margin-bottom: 8px; font-size: 0.95em; color: #555; }
+  .mission-card .highlight { color: #8a3c2a; font-weight: 600; }
+
+  /* ===== 全局标题 ===== */
+  .section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #2c2418;
+    margin: 40px 0 24px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #d4c8b8;
+    position: relative;
+  }
+  .section-title .badge {
+    display: inline-block;
+    background: #2c2418;
+    color: #f5f0eb;
+    font-size: 0.5em;
+    font-family: 'Noto Sans SC', sans-serif;
+    padding: 2px 14px;
+    border-radius: 20px;
+    margin-left: 12px;
+    vertical-align: middle;
+    font-weight: 500;
+  }
+
+  .sub-section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.3em;
+    font-weight: 700;
+    margin: 36px 0 16px;
+    color: #3d3226;
+  }
+
+  /* ===== 书籍分隔 ===== */
+  .book-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0 32px;
+  }
+  .book-divider .line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #c8b8a8, transparent); }
+  .book-divider .label {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.8em;
+    font-weight: 900;
+    color: #3d3226;
+    letter-spacing: 6px;
+    white-space: nowrap;
+  }
+  .book-divider .label.moon { color: #5a4a3a; }
+  .book-divider .label.spear { color: #6b3a2a; }
+
+  .book-sub {
+    text-align: center;
+    font-size: 0.85em;
+    color: #8a7c68;
+    margin-top: -20px;
+    margin-bottom: 32px;
+    letter-spacing: 4px;
+  }
+
+  /* ===== 角色标题 ===== */
+  .role-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .role-card.moon-theme { border-top: 3px solid #7a6a5a; }
+  .role-card.spear-theme { border-top: 3px solid #8a4a3a; }
+
+  .role-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .role-name .tag {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.55em;
+    font-weight: 500;
+    padding: 2px 12px;
+    border-radius: 20px;
+  }
+  .tag.moon-tag { background: #e8e0d8; color: #5a4a3a; }
+  .tag.spear-tag { background: #eed8d0; color: #7a3a2a; }
+
+  /* ===== 表格 ===== */
+  .analysis-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  .analysis-table thead th {
+    background: #f0e8e0;
+    color: #3d3226;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid #d4c8b8;
+  }
+  .analysis-table thead th:first-child { width: 16%; border-radius: 8px 0 0 0; }
+  .analysis-table thead th:nth-child(2) { width: 36%; }
+  .analysis-table thead th:last-child { width: 48%; border-radius: 0 8px 0 0; }
+
+  .analysis-table tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #e8e0d8;
+    vertical-align: top;
+  }
+  .analysis-table tbody td:first-child {
+    font-weight: 600;
+    color: #3d3226;
+  }
+  .analysis-table tbody tr:last-child td { border-bottom: none; }
+
+  .analysis-table textarea {
+    width: 100%;
+    border: 1px solid #e0d8d0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.9em;
+    color: #2c2418;
+    background: #fcfaf8;
+    resize: vertical;
+    min-height: 56px;
+    transition: border-color 0.2s;
+  }
+  .analysis-table textarea:focus {
+    outline: none;
+    border-color: #8a7c68;
+    box-shadow: 0 0 0 2px rgba(138,124,104,0.15);
+  }
+
+  /* ===== 角色选择器 ===== */
+  .role-selector { margin-bottom: 32px; }
+  .book-group-label {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #5a4a3a;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+  .role-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  .role-option {
+    background: #fff;
+    border: 2px solid #e0d8d0;
+    border-radius: 12px;
+    padding: 16px 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .role-option:hover {
+    border-color: #8a7c68;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .role-option.selected {
+    border-color: #2c7a4a;
+    background: #f0f8f0;
+    box-shadow: 0 0 0 2px rgba(44,122,74,0.15);
+  }
+  .role-option-icon { font-size: 2em; margin-bottom: 6px; }
+  .role-option-name { font-weight: 600; font-size: 0.95em; color: #2c2418; }
+  .role-option-brief { font-size: 0.8em; color: #8a7c68; margin-top: 4px; }
+
+  /* ===== 关键词行 ===== */
+  .keyword-row {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #f8f4f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .keyword-row .label {
+    font-weight: 600;
+    color: #5a4a3a;
+    font-size: 0.9em;
+    white-space: nowrap;
+  }
+  .keyword-input {
+    border: none;
+    border-bottom: 2px solid #c8b8a8;
+    background: transparent;
+    padding: 4px 8px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.95em;
+    color: #2c2418;
+    width: 110px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .keyword-input:focus {
+    outline: none;
+    border-bottom-color: #8a3c2a;
+  }
+
+  /* ===== 延伸思考 ===== */
+  .think-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 40px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-left: 4px solid #8a3c2a;
+  }
+  .think-section .think-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .think-item {
+    margin-bottom: 24px;
+  }
+  .think-item .q {
+    font-weight: 600;
+    color: #3d3226;
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  .think-item textarea {
+    width: 100%;
+    border: 1px solid #e0d8d0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.9em;
+    color: #2c2418;
+    background: #fcfaf8;
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color 0.2s;
+  }
+  .think-item textarea:focus {
+    outline: none;
+    border-color: #8a7c68;
+    box-shadow: 0 0 0 2px rgba(138,124,104,0.15);
+  }
+
+  /* ===== 总结表 ===== */
+  .summary-table-wrap {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 32px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  .summary-table thead th {
+    background: #2c2418;
+    color: #e8dcc8;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    border: none;
+  }
+  .summary-table thead th:first-child { border-radius: 8px 0 0 0; }
+  .summary-table thead th:last-child { border-radius: 0 8px 0 0; }
+  .summary-table tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid #e8e0d8;
+    vertical-align: middle;
+  }
+  .summary-table tbody tr:last-child td { border-bottom: none; }
+  .summary-table input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    padding: 4px 6px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.9em;
+    color: #2c2418;
+    background: transparent;
+  }
+  .summary-table input:focus {
+    outline: none;
+    border-bottom-color: #8a3c2a;
+  }
+
+  /* ===== 底部操作栏 ===== */
+  .action-bar {
+    position: sticky;
+    bottom: 0;
+    background: rgba(44,36,24,0.95);
+    backdrop-filter: blur(10px);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    border-radius: 12px 12px 0 0;
+  }
+  .action-bar button {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-save {
+    background: #8a7c68;
+    color: #fff;
+  }
+  .btn-save:hover { background: #6b5e4e; }
+  .btn-reset {
+    background: transparent;
+    color: #b8a88a;
+    border: 1px solid #5a4a3a;
+  }
+  .btn-reset:hover { background: rgba(255,255,255,0.05); color: #e8dcc8; }
+  .btn-print {
+    background: #8a3c2a;
+    color: #fff;
+  }
+  .btn-print:hover { background: #6b2e1e; }
+  .btn-export {
+    background: #2c7a4a;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .btn-export:hover { background: #1e5f38; }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #2c2418;
+    color: #e8dcc8;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ===== 打印样式 ===== */
+  @media print {
+    body { background: #fff; }
+    .header { background: #2c2418 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header::before, .header::after { display: none; }
+    .role-card, .mission-card, .summary-table-wrap, .think-section { box-shadow: none; border: 1px solid #ddd; }
+    .action-bar { display: none; }
+    .analysis-table thead th { background: #f0e8e0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .summary-table thead th { background: #2c2418 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff !important; }
+    .keyword-row { background: #f8f4f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .keyword-input { border-bottom: 1px solid #999; }
+    .analysis-table textarea, .think-item textarea, .summary-table input { border: 1px solid #ccc; }
+    .container { padding: 20px 0; }
+    .section-title { page-break-after: avoid; }
+    .role-card { page-break-inside: avoid; }
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 640px) {
+    .header { padding: 40px 20px 36px; }
+    .header h1 { font-size: 1.6em; letter-spacing: 3px; }
+    .container { padding: 16px 12px; }
+    .role-card { padding: 18px 16px; }
+    .analysis-table thead th:first-child { width: 22%; }
+    .analysis-table thead th:nth-child(2) { width: 33%; }
+    .analysis-table thead th:last-child { width: 45%; }
+    .analysis-table { font-size: 0.82em; }
+    .analysis-table tbody td { padding: 6px 8px; }
+    .keyword-input { width: 80px; }
+    .summary-table-wrap { padding: 16px; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== 头部 ===== -->
+<div class="header">
+  <h1>老舍角色AI · 学生分析模板</h1>
+  <div class="sub">《月牙儿》×《断魂枪》— 从文本到智能体</div>
+  <div class="meta">
+    <span>📖 精读原著</span>
+    <span>✍️ 提炼关键词</span>
+    <span>🤖 搭建AI角色</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 任务说明 ===== -->
+  <div class="mission-card">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid #e8e0d8;">
+      <label style="font-weight:600; white-space:nowrap; color:#3d3226;">👤 姓名：</label>
+      <input id="studentName" type="text" placeholder="请输入你的姓名" style="flex:1; padding:8px 14px; border:1px solid #d4c8b8; border-radius:6px; font-size:1em; background:#faf8f5; outline:none;">
+    </div>
+    <p><strong>🎯 任务目标：</strong>深入分析文本角色，提炼关键特征，为搭建角色对话智能体做准备。</p>
+    <p><strong>📦 最终产出：</strong>每个角色的 <span class="highlight">「关键词清单」</span> + <span class="highlight">「角色说明书」</span></p>
+    <p style="margin-top:12px; font-size:0.85em; color:#888;">💡 在文本框里直接填写，完成后点击底部「📋 导出提交」按钮，把内容提交给老师。</p>
+  </div>
+
+  <!-- ===== 角色选择器 ===== -->
+  <div class="section-title">① 选择一个角色 <span class="badge">单选</span></div>
+  <p style="color:#8a7c68; margin:-16px 0 24px; font-size:0.9em;">点击下方一个角色卡片，开始分析</p>
+
+  <div class="role-selector" id="roleSelector">
+    <div class="book-group-label">《月牙儿》</div>
+    <div class="role-options" data-book="moon">
+      <div class="role-option" data-role="wo" onclick="selectRole('wo')">
+        <div class="role-option-icon">👩</div>
+        <div class="role-option-name">「我」（女儿）</div>
+        <div class="role-option-brief">倔强自尊严酷命运</div>
+      </div>
+      <div class="role-option" data-role="mama" onclick="selectRole('mama')">
+        <div class="role-option-icon">👩‍👧</div>
+        <div class="role-option-name">妈妈</div>
+        <div class="role-option-brief">被生活压垮的母亲</div>
+      </div>
+      <div class="role-option" data-role="principal" onclick="selectRole('principal')">
+        <div class="role-option-icon">🧑‍💼</div>
+        <div class="role-option-name">胖校长</div>
+        <div class="role-option-brief">冷漠的体面人</div>
+      </div>
+      <div class="role-option" data-role="nephew" onclick="selectRole('nephew')">
+        <div class="role-option-icon">🤵</div>
+        <div class="role-option-name">校长的侄子</div>
+        <div class="role-option-brief">体面而虚伪</div>
+      </div>
+      <div class="role-option" data-role="ci" onclick="selectRole('ci')">
+        <div class="role-option-icon">🏺</div>
+        <div class="role-option-name">小瓷人</div>
+        <div class="role-option-brief">美丽脆弱的命运</div>
+      </div>
+    </div>
+    <div class="book-group-label" style="margin-top:16px;">《断魂枪》</div>
+    <div class="role-options" data-book="spear">
+      <div class="role-option" data-role="sha" onclick="selectRole('sha')">
+        <div class="role-option-icon">⚔️</div>
+        <div class="role-option-name">沙子龙</div>
+        <div class="role-option-brief">落寞的坚守者</div>
+      </div>
+      <div class="role-option" data-role="wang" onclick="selectRole('wang')">
+        <div class="role-option-icon">💪</div>
+        <div class="role-option-name">王三胜</div>
+        <div class="role-option-brief">浮躁的习武人</div>
+      </div>
+      <div class="role-option" data-role="sun" onclick="selectRole('sun')">
+        <div class="role-option-icon">🧓</div>
+        <div class="role-option-name">孙老者</div>
+        <div class="role-option-brief">痴迷真功夫</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 分析区（选择角色后显示） ===== -->
+  <div id="analysisArea" style="display:none;">
+    <div class="section-title">② 角色深度分析 <span class="badge">填写</span></div>
+    <div id="selectedRoleName" style="font-family:'Noto Serif SC',serif; font-size:1.3em; font-weight:700; margin-bottom:20px; color:#3d3226;"></div>
+
+    <!-- 角色分析卡片容器 -->
+    <div id="roleCardContainer"></div>
+
+    <!-- 角色关键词 -->
+    <div id="keywordSection" style="display:none; margin:24px 0;">
+      <div class="sub-section-title">🔑 提炼关键词（5个以内）</div>
+      <div id="keywordInputs" class="keyword-row"></div>
+    </div>
+
+    <!-- 汇总（角色灵魂一句话） -->
+    <div id="soulSection" style="display:none; margin:24px 0 40px;">
+      <div class="sub-section-title">💬 一句话概括角色灵魂</div>
+      <input id="soulInput" type="text" placeholder="不超过20字" style="width:100%; max-width:400px; padding:10px 16px; border:1px solid #d4c8b8; border-radius:6px; font-size:1em; background:#fff;">
+    </div>
+
+  <!-- ================================================================ -->
+  <!-- 任务三：延伸思考 -->
+  <!-- ================================================================ -->
+  <div class="section-title">任务三 · 延伸思考 <span class="badge" style="background:#8a3c2a;">拓展</span></div>
+
+  <div class="think-section">
+    <div class="think-title">💭 深入想想</div>
+
+    <div class="think-item">
+      <div class="q">1. 《月牙儿》中的「我」和沙子龙，一个被迫堕落，一个主动隐退——他们的选择看似不同，本质上有共同点吗？</div>
+      <textarea rows="3" placeholder="写下你的思考…"></textarea>
+    </div>
+
+    <div class="think-item">
+      <div class="q">2. 如果要让AI扮演这些角色，你觉得最核心的「角色灵魂」是什么？（用一句话说清楚，不能超过20个字）</div>
+      <textarea rows="2" placeholder="不超过20个字"></textarea>
+    </div>
+
+    <div class="think-item">
+      <div class="q">3. 这几个角色里，你觉得哪个最适合做「可对话的AI」？为什么？</div>
+      <textarea rows="3" placeholder="写下你的思考…"></textarea>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ===== 底部操作栏 ===== -->
+<div class="action-bar">
+  <button class="btn-export" onclick="exportData()">📋 导出提交</button>
+  <button class="btn-save" onclick="saveData()">💾 保存到本地</button>
+  <button class="btn-reset" onclick="resetAll()">↺ 重置</button>
+  <button class="btn-print" onclick="window.print()">🖨️ 打印PDF</button>
+</div>
+
+<script>
+  /* ================================================================
+     角色数据库
+     ================================================================ */
+  const ROLES = {
+    wo: {
+      name: '「我」（女儿）', book: 'moon', bookName: '《月牙儿》', icon: '👩',
+      theme: 'moon-theme', tag: 'moon-tag',
+      questions: [
+        ['身份背景', '她出身什么家庭？经历了哪些关键变故？'],
+        ['性格特征', '挑3个词概括她的性格。她与妈妈最大的不同是什么？'],
+        ['语言风格', '她是用什么口气说话的？（温顺？尖锐？冷漠？悲凉？）摘录1-2句原文佐证'],
+        ['核心挣扎', '她最想要什么？最怕什么？是什么让她一步步改变？'],
+        ['命运转折', '小说中她有几个关键转折点？分别是什么？'],
+        ['与月牙儿的关系', '月牙儿出现了几次？每次出现时她的心境是什么？']
+      ]
+    },
+    mama: {
+      name: '妈妈', book: 'moon', bookName: '《月牙儿》', icon: '👩‍👧',
+      theme: 'moon-theme', tag: 'moon-tag',
+      questions: [
+        ['身份背景', '妈妈在丈夫死后的生存方式经历了怎样的变化？'],
+        ['性格变化', '小说开头和结尾的妈妈，性格有没有变？怎么变的？'],
+        ['与女儿的关系', '妈妈对「我」的爱体现在哪里？母女之间有没有隔阂？'],
+        ['悲剧根源', '妈妈走向堕落的根本原因是什么？']
+      ]
+    },
+    principal: {
+      name: '胖校长', book: 'moon', bookName: '《月牙儿》', icon: '🧑‍💼',
+      theme: 'moon-theme', tag: 'moon-tag',
+      questions: [
+        ['身份地位', '他是哪所学校的校长？在小说中处于什么位置？'],
+        ['与侄子的关系', '他和侄子之间是什么关系？他对侄子的行为是否知情？'],
+        ['对「我」的态度', '当「我」去找他求助时，他是什么态度？他的处理方式说明了什么？'],
+        ['人物功能', '胖校长这个角色在小说中起到了什么作用？他代表了哪一类人？']
+      ]
+    },
+    nephew: {
+      name: '校长的侄子', book: 'moon', bookName: '《月牙儿》', icon: '🤵',
+      theme: 'moon-theme', tag: 'moon-tag',
+      questions: [
+        ['外表特征', '他的外貌和气质是什么样的？他给人的第一印象是什么？'],
+        ['行为方式', '他是如何接近和对待「我」的？他的温和是真实的吗？'],
+        ['对「我」的影响', '他对「我」的人生造成了什么影响？「我」如何看待这段关系？'],
+        ['人物复杂性', '他是有意欺骗还是身不由己？老舍为什么塑造这样一个"体面而虚伪"的形象？']
+      ]
+    },
+    ci: {
+      name: '小瓷人', book: 'moon', bookName: '《月牙儿》', icon: '🏺',
+      theme: 'moon-theme', tag: 'moon-tag',
+      questions: [
+        ['名字的意味', '为什么叫她"小瓷人"？这个称呼暗示了她什么样的气质和命运？'],
+        ['外貌特征', '她的美是什么样的？老舍用"美得不玲珑"来形容她，你怎么理解？'],
+        ['性格特点', '面对丈夫出轨，她的反应是什么？她代表了哪一类女性？'],
+        ['与「我」的对照', '小瓷人和「我」同为女性、同为被背叛者，她们的命运有何不同？有何相似？']
+      ]
+    },
+    sha: {
+      name: '沙子龙', book: 'spear', bookName: '《断魂枪》', icon: '⚔️',
+      theme: 'spear-theme', tag: 'spear-tag',
+      questions: [
+        ['身份背景', '沙子龙曾经是谁？现在在做什么？为什么转变？'],
+        ['性格特征', '挑3个词概括他的性格。他和徒弟王三胜有什么不同？'],
+        ['核心动作', '小说中他反复说的一句话是什么？他为什么这么说？'],
+        ['时代处境', '"东方的大梦没法子不醒了"——这句话是什么意思？对沙子龙意味着什么？'],
+        ['内心世界', '深夜独自练枪时，他是什么心情？叹气之后"微微一笑"说明了什么？']
+      ]
+    },
+    wang: {
+      name: '王三胜', book: 'spear', bookName: '《断魂枪》', icon: '💪',
+      theme: 'spear-theme', tag: 'spear-tag',
+      questions: [
+        ['人物画像', '王三胜的外貌、性格、行为特征是什么？'],
+        ['与沙子龙的对比', '师徒二人对待武艺的态度有什么根本不同？'],
+        ['人物功能', '小说中为什么要有王三胜这个角色？他在叙事中起什么作用？']
+      ]
+    },
+    sun: {
+      name: '孙老者', book: 'spear', bookName: '《断魂枪》', icon: '🧓',
+      theme: 'spear-theme', tag: 'spear-tag',
+      questions: [
+        ['人物画像', '孙老者的外貌和武功有什么特点？'],
+        ['与王三胜的对比', '同是习武之人，孙老者与王三胜最大的区别是什么？'],
+        ['求艺被拒', '孙老者登门求艺被沙子龙拒绝，你怎么理解这一情节？']
+      ]
+    }
+  };
+
+  let currentRole = null;  // 当前选中的角色ID
+
+  /* ===== 选择角色 ===== */
+  function selectRole(roleId) {
+    currentRole = roleId;
+    const role = ROLES[roleId];
+    if (!role) return;
+
+    // 更新选择器高亮
+    document.querySelectorAll('.role-option').forEach(el => el.classList.remove('selected'));
+    document.querySelector(`.role-option[data-role="${roleId}"]`).classList.add('selected');
+
+    // 显示分析区
+    document.getElementById('analysisArea').style.display = 'block';
+
+    // 渲染角色名
+    document.getElementById('selectedRoleName').textContent = `${role.icon} ${role.bookName} · ${role.name}`;
+
+    // 渲染分析卡片
+    const container = document.getElementById('roleCardContainer');
+    container.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = `role-card ${role.theme}`;
+
+    let html = `<div class="role-name">${role.name} <span class="tag ${role.tag}">${role.bookName}</span></div>`;
+    html += `<table class="analysis-table"><thead><tr><th>分析维度</th><th>引导问题</th><th>你的笔记</th></tr></thead><tbody>`;
+    role.questions.forEach((q, i) => {
+      html += `<tr><td>${q[0]}</td><td>${q[1]}</td><td><textarea rows="2" placeholder="写下你的分析…" data-role="${roleId}" data-q="${i}"></textarea></td></tr>`;
+    });
+    html += `</tbody></table>`;
+    card.innerHTML = html;
+    container.appendChild(card);
+
+    // 关键词输入
+    const kwSection = document.getElementById('keywordSection');
+    kwSection.style.display = 'block';
+    const kwContainer = document.getElementById('keywordInputs');
+    kwContainer.innerHTML = '<span class="label">🔑 提炼关键词（5个以内）：</span>';
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.createElement('input');
+      inp.className = 'keyword-input';
+      inp.placeholder = '关键词' + i;
+      inp.dataset.role = roleId;
+      inp.dataset.kw = i;
+      kwContainer.appendChild(inp);
+    }
+
+    // 灵魂一句话
+    document.getElementById('soulSection').style.display = 'block';
+    const soulInput = document.getElementById('soulInput');
+    soulInput.dataset.role = roleId;
+
+    // 恢复已保存的数据
+    loadRoleData(roleId);
+
+    // 绑定自动保存
+    setupAutoSave(roleId);
+
+    // 滚到分析区
+    document.getElementById('analysisArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ===== 数据存取 ===== */
+  function getRoleStorageKey(roleId) {
+    return 'laoshe_role_' + roleId;
+  }
+
+  function saveRoleData(roleId) {
+    const role = ROLES[roleId];
+    if (!role) return;
+    const data = {};
+    // 姓名
+    const nameEl = document.getElementById('studentName');
+    data.studentName = nameEl ? nameEl.value : '';
+    // 当前角色
+    data.currentRole = roleId;
+    // textarea 答案
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${roleId}"][data-q="${i}"]`);
+      data['q_' + i] = ta ? ta.value : '';
+    });
+    // 关键词
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${roleId}"][data-kw="${i}"]`);
+      data['kw_' + i] = inp ? inp.value : '';
+    }
+    // 灵魂
+    const soul = document.getElementById('soulInput');
+    data.soul = soul ? soul.value : '';
+    // 延伸思考
+    const thinkItems = document.querySelectorAll('.think-item textarea');
+    thinkItems.forEach((ta, i) => {
+      data['think_' + i] = ta.value;
+    });
+    localStorage.setItem(getRoleStorageKey(roleId), JSON.stringify(data));
+  }
+
+  function loadRoleData(roleId) {
+    const raw = localStorage.getItem(getRoleStorageKey(roleId));
+    if (!raw) return;
+    try {
+      const data = JSON.parse(raw);
+      const role = ROLES[roleId];
+      if (!role) return;
+      // 姓名
+      const nameEl = document.getElementById('studentName');
+      if (nameEl && data.studentName) nameEl.value = data.studentName;
+      // textarea
+      role.questions.forEach((q, i) => {
+        const ta = document.querySelector(`textarea[data-role="${roleId}"][data-q="${i}"]`);
+        if (ta && data['q_' + i] !== undefined) ta.value = data['q_' + i];
+      });
+      // 关键词
+      for (let i = 1; i <= 5; i++) {
+        const inp = document.querySelector(`input[data-role="${roleId}"][data-kw="${i}"]`);
+        if (inp && data['kw_' + i] !== undefined) inp.value = data['kw_' + i];
+      }
+      // 灵魂
+      const soul = document.getElementById('soulInput');
+      if (soul && data.soul !== undefined) soul.value = data.soul;
+      // 延伸思考
+      const thinkItems = document.querySelectorAll('.think-item textarea');
+      thinkItems.forEach((ta, i) => {
+        if (data['think_' + i] !== undefined) ta.value = data['think_' + i];
+      });
+    } catch(e) {}
+  }
+
+  function setupAutoSave(roleId) {
+    const area = document.getElementById('analysisArea');
+    const handler = function(e) {
+      if (currentRole) saveRoleData(currentRole);
+    };
+    // 移除旧的监听器（用新替换）
+    area.removeEventListener('input', area._autoSaveHandler);
+    area._autoSaveHandler = handler;
+    area.addEventListener('input', handler);
+    // 延伸思考区
+    document.querySelector('.think-section')?.removeEventListener('input', handler);
+    document.querySelector('.think-section')?.addEventListener('input', handler);
+    // 姓名
+    document.getElementById('studentName')?.removeEventListener('input', handler);
+    document.getElementById('studentName')?.addEventListener('input', handler);
+  }
+
+  /* ===== 保存到本地（手动） ===== */
+  function saveData() {
+    if (currentRole) {
+      saveRoleData(currentRole);
+      showToast('✅ 已保存到浏览器！');
+    } else {
+      showToast('⚠️ 请先选择一个角色');
+    }
+  }
+
+  /* ===== 重置 ===== */
+  function resetAll() {
+    if (!confirm('确定要清空当前角色的所有填写内容吗？')) return;
+    if (!currentRole) { showToast('⚠️ 请先选择一个角色'); return; }
+    const role = ROLES[currentRole];
+    if (!role) return;
+    // 清空 textarea
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      if (ta) ta.value = '';
+    });
+    // 清空关键词
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp) inp.value = '';
+    }
+    // 清空灵魂
+    const soul = document.getElementById('soulInput');
+    if (soul) soul.value = '';
+    // 清空延伸思考
+    document.querySelectorAll('.think-item textarea').forEach(ta => ta.value = '');
+    localStorage.removeItem(getRoleStorageKey(currentRole));
+    showToast('🔄 已清空当前角色内容');
+  }
+
+  /* ===== 导出（复制 / 下载 / 邮件） ===== */
+  function exportData() {
+    if (!currentRole) { showToast('⚠️ 请先选择一个角色'); return; }
+    saveRoleData(currentRole);
+    const txt = buildExportText();
+    if (!txt) { showToast('⚠️ 请先填写姓名再导出'); return; }
+
+    // 复制到剪贴板
+    navigator.clipboard.writeText(txt).then(() => {
+      showToast('✅ 已复制到剪贴板！');
+    }).catch(() => {
+      downloadTxt(txt);
+    });
+
+    // 弹出选项
+    setTimeout(() => {
+      const action = confirm('📥 是否下载 .txt 文件？\n取消 = 用邮件提交');
+      if (action) {
+        downloadTxt(txt);
+      } else {
+        emailSubmit(txt);
+      }
+    }, 600);
+  }
+
+  function buildExportText() {
+    const nameEl = document.getElementById('studentName');
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) return '';
+
+    const role = ROLES[currentRole];
+    if (!role) return '';
+
+    let lines = [];
+    lines.push('════════════════════════════════════════════');
+    lines.push('  老舍角色AI · 学生分析报告');
+    lines.push('════════════════════════════════════════════');
+    lines.push('');
+    lines.push('👤 姓名：' + name);
+    lines.push('📅 提交日期：' + new Date().toLocaleDateString('zh-CN'));
+    lines.push('');
+    lines.push('📖 篇目：' + role.bookName);
+    lines.push('🎭 角色：' + role.name);
+    lines.push('');
+
+    // ---- 详细分析 ----
+    lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+    lines.push('【角色深度分析】');
+    lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+    role.questions.forEach((q, i) => {
+      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
+      const ans = ta ? ta.value.trim() || '（未填写）' : '（未填写）';
+      lines.push('');
+      lines.push(`  [${q[0]}] ${q[1]}`);
+      lines.push(`  → ${ans}`);
+    });
+
+    // ---- 关键词 ----
+    lines.push('');
+    lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+    lines.push('【关键词 & 角色灵魂】');
+    lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+    let kws = [];
+    for (let i = 1; i <= 5; i++) {
+      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
+      if (inp && inp.value.trim()) kws.push(inp.value.trim());
+    }
+    lines.push('  关键词：' + (kws.length ? kws.join('、') : '（未填写）'));
+    const soul = document.getElementById('soulInput');
+    lines.push('  角色灵魂：' + (soul && soul.value.trim() ? soul.value.trim() : '（未填写）'));
+
+    // ---- 延伸思考 ----
+    const thinkItems = document.querySelectorAll('.think-item');
+    if (thinkItems.length > 0) {
+      lines.push('');
+      lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+      lines.push('【延伸思考】');
+      lines.push('┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈');
+      thinkItems.forEach((item, i) => {
+        const q = item.querySelector('.q');
+        const a = item.querySelector('textarea');
+        if (q && a) {
+          lines.push('');
+          lines.push(`  Q${i+1}. ${q.textContent.trim()}`);
+          lines.push(`  A. ${a.value.trim() || '（未填写）'}`);
+        }
+      });
+    }
+
+    lines.push('');
+    lines.push('════════════════════════════════════════════');
+    lines.push('  — 由老舍角色AI分析模板自动生成 —');
+
+    return lines.join('\n');
+  }
+
+  function downloadTxt(txt) {
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const nameEl = document.getElementById('studentName');
+    const name = nameEl ? nameEl.value.trim() : '无名';
+    a.download = `角色分析_${name}_${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('📥 文件已下载！');
+  }
+
+  function emailSubmit(txt) {
+    const nameEl = document.getElementById('studentName');
+    const name = nameEl ? nameEl.value.trim() : '无名';
+    const subject = encodeURIComponent(`角色分析提交 - ${name}`);
+    const body = encodeURIComponent(txt);
+    window.open(`mailto:laoshe-ai@coze.email?subject=${subject}&body=${body}`);
+    showToast('📧 邮件客户端已打开，点击发送即可提交！');
+  }
+
+  /* ===== Toast ===== */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  /* ===== 恢复上次选择 ===== */
+  function loadData() {
+    // 检查所有角色的存储，取最后有数据的那个
+    for (const id in ROLES) {
+      const raw = localStorage.getItem(getRoleStorageKey(id));
+      if (raw) {
+        try {
+          const data = JSON.parse(raw);
+          if (data.studentName) {
+            const nameEl = document.getElementById('studentName');
+            if (nameEl) nameEl.value = data.studentName;
+          }
+          if (data.currentRole && ROLES[data.currentRole]) {
+            selectRole(data.currentRole);
+            return;
+          }
+        } catch(e) {}
+      }
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadData);
+</script>
+
+</body>
+</html>

@@ -463,14 +463,12 @@
   function submitToTeacher() {
     if (!currentRole) { showToast('⚠️ 请先选择一个角色并填写分析内容'); return; }
 
-    // 检查是否有内容
     const role = ROLES[currentRole];
     let hasContent = false;
     role.questions.forEach((q, i) => {
       const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
       if (ta && ta.value.trim()) hasContent = true;
     });
-    // 检查关键词
     for (let i = 1; i <= 5; i++) {
       const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
       if (inp && inp.value.trim()) hasContent = true;
@@ -479,77 +477,33 @@
     if (soul && soul.value.trim()) hasContent = true;
 
     if (!hasContent) { showToast('⚠️ 请先填写一些分析内容再提交'); return; }
-
-    // 先保存
     saveRoleData(currentRole);
 
-    // 构建提交数据
     const nameEl = document.getElementById('studentName');
     const name = nameEl ? nameEl.value.trim() : '';
     if (!name) { showToast('⚠️ 请先填写姓名'); return; }
 
-    const data = {
-      studentName: name,
-      role: role.name,
-      bookName: role.bookName,
-      timestamp: new Date().toISOString(),
-      analysis: {},
-      keywords: [],
-      soul: soul ? soul.value.trim() : '',
-      thinkQuestions: []
-    };
+    const btn = document.querySelector('.btn-submit-teacher');
 
-    role.questions.forEach((q, i) => {
-      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
-      data.analysis[q[0]] = ta ? ta.value.trim() : '';
-    });
-
-    for (let i = 1; i <= 5; i++) {
-      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
-      if (inp && inp.value.trim()) data.keywords.push(inp.value.trim());
+    // 先尝试复制到剪贴板
+    const txt = buildExportText();
+    if (txt) {
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('📋 内容已复制到剪贴板！正在打开邮件客户端...');
+      }).catch(() => {});
     }
 
-    document.querySelectorAll('.think-item').forEach((item, i) => {
-      const q = item.querySelector('.q');
-      const a = item.querySelector('textarea');
-      if (q && a && a.value.trim()) {
-        data.thinkQuestions.push({ q: q.textContent.trim(), a: a.value.trim() });
-      }
-    });
+    // 构建邮件内容
+    const subject = encodeURIComponent('[芸芸众生2.0] ' + role.bookName + ' · ' + role.name + ' — ' + name);
+    const body = encodeURIComponent(txt || buildExportText() || (name + ' 的' + role.bookName + role.name + '角色分析'));
+    const teacherEmail = 'TEACHER_EMAIL_PLACEHOLDER';
 
-    // 使用 Formspree 提交
-    // ⚠️ 将 YOUR_FORM_ID 替换为你创建的 Formspree form ID
-    const FORMSPREE_ID = 'SUBMIT_FORM_ID_HERE';
-
-    const btn = document.querySelector('.btn-submit-teacher');
-    btn.disabled = true;
-    btn.textContent = '⏳ 提交中...';
-
-    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(r => {
-      if (r.ok) {
-        showToast('✅ 提交成功！赖老师已收到你的分析。');
-        btn.textContent = '✅ 已提交';
-        btn.style.background = '#2c7a4a';
-      } else {
-        throw new Error('提交失败');
-      }
-    })
-    .catch(err => {
-      // Formspree 未配置时，复制内容到剪贴板备用
-      const txt = buildExportText();
-      navigator.clipboard.writeText(txt).then(() => {
-        showToast('📋 在线提交暂未开启，内容已复制到剪贴板，请粘贴发送给老师');
-      }).catch(() => {
-        showToast('⚠️ 提交失败，请使用「导出/复制」按钮获取内容');
-      });
-      btn.disabled = false;
-      btn.textContent = '📤 提交给教师';
-    });
+    // 打开邮件客户端
+    setTimeout(() => {
+      window.open('mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body);
+      btn.textContent = '📤 已打开邮件';
+      setTimeout(() => { btn.textContent = '📤 提交给教师'; }, 3000);
+    }, 500);
   }
 
   /* ===== Toast ===== */
@@ -1133,14 +1087,12 @@
   function submitToTeacher() {
     if (!currentRole) { showToast('⚠️ 请先选择一个角色并填写分析内容'); return; }
 
-    // 检查是否有内容
     const role = ROLES[currentRole];
     let hasContent = false;
     role.questions.forEach((q, i) => {
       const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
       if (ta && ta.value.trim()) hasContent = true;
     });
-    // 检查关键词
     for (let i = 1; i <= 5; i++) {
       const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
       if (inp && inp.value.trim()) hasContent = true;
@@ -1149,77 +1101,33 @@
     if (soul && soul.value.trim()) hasContent = true;
 
     if (!hasContent) { showToast('⚠️ 请先填写一些分析内容再提交'); return; }
-
-    // 先保存
     saveRoleData(currentRole);
 
-    // 构建提交数据
     const nameEl = document.getElementById('studentName');
     const name = nameEl ? nameEl.value.trim() : '';
     if (!name) { showToast('⚠️ 请先填写姓名'); return; }
 
-    const data = {
-      studentName: name,
-      role: role.name,
-      bookName: role.bookName,
-      timestamp: new Date().toISOString(),
-      analysis: {},
-      keywords: [],
-      soul: soul ? soul.value.trim() : '',
-      thinkQuestions: []
-    };
+    const btn = document.querySelector('.btn-submit-teacher');
 
-    role.questions.forEach((q, i) => {
-      const ta = document.querySelector(`textarea[data-role="${currentRole}"][data-q="${i}"]`);
-      data.analysis[q[0]] = ta ? ta.value.trim() : '';
-    });
-
-    for (let i = 1; i <= 5; i++) {
-      const inp = document.querySelector(`input[data-role="${currentRole}"][data-kw="${i}"]`);
-      if (inp && inp.value.trim()) data.keywords.push(inp.value.trim());
+    // 先尝试复制到剪贴板
+    const txt = buildExportText();
+    if (txt) {
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('📋 内容已复制到剪贴板！正在打开邮件客户端...');
+      }).catch(() => {});
     }
 
-    document.querySelectorAll('.think-item').forEach((item, i) => {
-      const q = item.querySelector('.q');
-      const a = item.querySelector('textarea');
-      if (q && a && a.value.trim()) {
-        data.thinkQuestions.push({ q: q.textContent.trim(), a: a.value.trim() });
-      }
-    });
+    // 构建邮件内容
+    const subject = encodeURIComponent('[芸芸众生2.0] ' + role.bookName + ' · ' + role.name + ' — ' + name);
+    const body = encodeURIComponent(txt || buildExportText() || (name + ' 的' + role.bookName + role.name + '角色分析'));
+    const teacherEmail = 'TEACHER_EMAIL_PLACEHOLDER';
 
-    // 使用 Formspree 提交
-    // ⚠️ 将 YOUR_FORM_ID 替换为你创建的 Formspree form ID
-    const FORMSPREE_ID = 'SUBMIT_FORM_ID_HERE';
-
-    const btn = document.querySelector('.btn-submit-teacher');
-    btn.disabled = true;
-    btn.textContent = '⏳ 提交中...';
-
-    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(r => {
-      if (r.ok) {
-        showToast('✅ 提交成功！赖老师已收到你的分析。');
-        btn.textContent = '✅ 已提交';
-        btn.style.background = '#2c7a4a';
-      } else {
-        throw new Error('提交失败');
-      }
-    })
-    .catch(err => {
-      // Formspree 未配置时，复制内容到剪贴板备用
-      const txt = buildExportText();
-      navigator.clipboard.writeText(txt).then(() => {
-        showToast('📋 在线提交暂未开启，内容已复制到剪贴板，请粘贴发送给老师');
-      }).catch(() => {
-        showToast('⚠️ 提交失败，请使用「导出/复制」按钮获取内容');
-      });
-      btn.disabled = false;
-      btn.textContent = '📤 提交给教师';
-    });
+    // 打开邮件客户端
+    setTimeout(() => {
+      window.open('mailto:' + teacherEmail + '?subject=' + subject + '&body=' + body);
+      btn.textContent = '📤 已打开邮件';
+      setTimeout(() => { btn.textContent = '📤 提交给教师'; }, 3000);
+    }, 500);
   }
 
   /* ===== Toast ===== */
